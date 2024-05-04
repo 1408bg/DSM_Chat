@@ -3,7 +3,7 @@ Socket.io를 통한 JS 기반의 **모든** 플렛폼 실시간 채팅 서비스
 ## API Address
 서버 주소와 소켓 주소는 동일합니다!
 ex) http://192.168.1.17:8080
-*지루해지는 곳 (사용설명서)*
+###### *지루해지는 곳 (사용설명서)*
 ## Client Connect (JS client의 경우)
 client에서는 SocketIO의
 .connect() 메서드를 사용하여 연결합니다.
