@@ -26,7 +26,7 @@ JSON 에서 사용하는 key와 그 역할
 1. name -- 사용자명
 2. message -- 실제 메시지
 3. num -- 사용자 식별 번호 (ip) - yourNum event를 통해 server로 부터 전달됨
-## IO Event
+## Socket Event
 ### Server Event
 1. sendAll -- 연결된 모든 client에 전달하는 event - message의 형식을 갖추어 반환
 2. yourNum -- getNum 요청을 한 client에 server가 전달하는 client의 ip주소
