@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DSM_Chat</title>
+  <link rel="favicon" href="https://raw.githubusercontent.com/1408bg/1408bg.github.io/main/favicon.ico">
   <style>
 * {
   padding: 0px;
@@ -100,8 +101,8 @@ em {
     <p>현재 주소 : <span id="addr"></span></p>
     <div id="input-wrapper">
       <div>
-        <input type="text" size="4" id="name" placeholder="name" onchange="setName()">
-        <input type="text" size="10" id="message" placeholder="message">
+        <input type="text" size="4" id="name" placeholder="name" autocomplete='off' onchange="setName()">
+        <input type="text" size="10" id="message" autocomplete='off' placeholder="message">
         <button id="send" onclick="sendMassage(getData())">Send</button>
       </div>
     </div>
@@ -154,6 +155,10 @@ socket.on('address', (addr) => {
 socket.on('disconnect', () => {
   alert('서버가 닫혔습미다... 새로고침하세요');
   location.reload(true);
+});
+
+socket.on('blocked', () => {
+  alert('님 차단당함');
 });
 
 setName = () => {
