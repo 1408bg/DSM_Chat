@@ -1,9 +1,6 @@
 const dns = require('node:dns');
 const express = require('express');
 const socket = require('socket.io');
-const { log } = require('node:console');
-const { setTimeout } = require('node:timers/promises');
-const { loadavg } = require('node:os');
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -25,8 +22,7 @@ app.get("/", (req, res) => {
       }
       buf = `blacklist ${key}의 접근 감지`;
       sendMessage(`blacklist ${key}의 접근 감지`);
-      req.send('blocked');
-      return;
+      return res.send('blocked');
     }
   }
   if (req.headers['user-header'] == 'flutter-v0'){
@@ -35,6 +31,9 @@ app.get("/", (req, res) => {
       address : addr,
       main : "Chat log"
     });
+  }
+  if (req.headers['user-header'] == 'unity'){
+    return res.send('connected');
   }
   res.sendFile(__dirname + '/index.html');
 });
@@ -166,8 +165,7 @@ io.on('connection', (ws) => {
   ws.emit('address', addr);
 
   ws.on('getNum', (name) => {
-    num = clientIp;
-    console.log(num);
+    num = clientIp.toString();
     ws.emit('yourNum', num);
     sendMessage(`${name}[${num}] 접속 | 총 방문 : ${++userCounter}명`);
   });
@@ -182,11 +180,12 @@ io.on('connection', (ws) => {
   ws.on('message', (message) => {
 
     if (!IsJsonString(message)){
+      console.log("1");
       return;
     }
 
     for (var ip in blackList){
-      if (ip == clientIp){
+      if (blackList[ip] == clientIp){
         return;
       }
     }
