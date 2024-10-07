@@ -130,7 +130,7 @@ wrappingTime = (time) => {
   return (time < 10 ? "0"+time : time);
 }
 
-const socket = io.connect(`http://${location.protocol === 'https:' ? 's' : ''}${window.location.host}`, {
+const socket = io.connect(`http${location.protocol === 'https:' ? 's' : ''}://${window.location.host}`, {
   path: '/socket.io',
   transports: ['websocket']
 });
