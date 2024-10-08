@@ -6,7 +6,7 @@ dns.setDefaultResultOrder("ipv4first");
 
 const app = express();
 
-const flutterV = "flutter-v0.3";
+const flutterV = "flutter-v0.4";
 
 let num = 'error';
 let buf = '404';
@@ -33,9 +33,6 @@ app.get("/", (req, res) => {
       address : addr,
       main : "Chat log"
     });
-  }
-  if (req.headers['user-header'] == 'unity'){
-    return res.send('connected');
   }
   res.sendFile(__dirname + '/index.html');
 });
@@ -146,6 +143,10 @@ io.on('connection', (ws) => {
   console.log("!");
   let clientIp = `${ws.request.connection.remoteAddress}`;
   clientIp = (clientIp == '::1') ? 'host' : clientIp.split('.').at(-1);
+  const forwardedIpsStr = req.header('x-forwarded-for');
+  if (forwardedIpsStr) {
+    clientIp += '#' + forwardedIpsStr.split(',')[0];
+  }
 
   for (key in whiteList){
     if (clientIp = whiteList[key]){
@@ -160,9 +161,6 @@ io.on('connection', (ws) => {
     ws.emit('yourNum', num);
     sendMessage(`${name}[${num}] 접속 | 총 방문 : ${++userCounter}명`);
   });
-
-  // ws.on('disconnect', () => {
-  // })
 
   ws.on('error', (err) => {
     console.error(err);
@@ -182,6 +180,9 @@ io.on('connection', (ws) => {
     }
 
     message = JSON.parse(message);
+    if (message['message'].length > 32 || message['name'].length > 16) {
+        return;
+    }
     let data = {
       Sname : message['name'],
       Snum : message['num'],
@@ -198,10 +199,4 @@ io.on('connection', (ws) => {
   });
 });
 
-require('dns').lookup(require('os').hostname(), (err, add, fam) => {
-  if (err) {
-    console.error('DNS error:', err);
-  } else {
-    addr = add + ':8080';
-  }
-});
+addr = 'https://dsm-chat.injunweb.com/';
