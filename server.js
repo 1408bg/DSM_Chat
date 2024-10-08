@@ -140,13 +140,8 @@ IsJsonString = (str) => {
 }
 
 io.on('connection', (ws) => {
-  console.log("!");
   let clientIp = `${ws.request.connection.remoteAddress}`;
   clientIp = (clientIp == '::1') ? 'host' : clientIp.split('.').at(-1);
-  const forwardedIpsStr = req.header('x-forwarded-for');
-  if (forwardedIpsStr) {
-    clientIp += '#' + forwardedIpsStr.split(',')[0];
-  }
 
   for (key in whiteList){
     if (clientIp = whiteList[key]){
