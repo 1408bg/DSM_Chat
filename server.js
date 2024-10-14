@@ -194,4 +194,4 @@ io.on('connection', (ws) => {
   });
 });
 
-addr = 'https://dsm-chat.injunweb.com/';
+addr = 'https://dsm-chat.ijw.app/';
